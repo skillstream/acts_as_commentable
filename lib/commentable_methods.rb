@@ -1,4 +1,5 @@
 require 'active_record'
+require 'rails'
 
 # ActsAsCommentable
 module Juixe
@@ -12,7 +13,7 @@ module Juixe
       module HelperMethods
         private
         def define_role_based_inflection(role)
-          send("define_role_based_inflection_#{Rails.version.first}", role)
+          send("define_role_based_inflection_#{Rails.version[0]}", role)
         end
 
         def define_role_based_inflection_3(role)
@@ -29,6 +30,7 @@ module Juixe
         def has_many_options(role)
           {:class_name => "Comment",
                   :as => :commentable,
+                  :inverse_of => :commentable,
                   :dependent => :destroy,
                   :before_add => Proc.new { |x, c| c.role = role.to_s }
           }
@@ -53,9 +55,9 @@ module Juixe
             comment_roles.each do |role|
               define_role_based_inflection(role)
             end
-            has_many :all_comments, { :as => :commentable, :dependent => :destroy, class_name: 'Comment' }.merge(join_options)
+            has_many :all_comments, {:as => :commentable, :inverse_of => :commentable, :dependent => :destroy, class_name: 'Comment'}.merge(join_options)
           else
-            has_many :comments, {:as => :commentable, :dependent => :destroy}.merge(join_options)
+            has_many :comments, {:as => :commentable, :inverse_of => :commentable, :dependent => :destroy}.merge(join_options)
           end
 
           comment_types.each do |role|

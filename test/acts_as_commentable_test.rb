@@ -170,4 +170,12 @@ class ActsAsCommentableTest < Test::Unit::TestCase
     assert_equal false, public_comment.is_comment_type?(:comment)
   end
 
+  def test_create_post_with_comment
+    post = Post.new(:text => 'Awesome post with comment!')
+    comment = Comment.new(:title => 'First Comment', :comment => 'Accompanying comment')
+    post.add_comment(comment)
+    assert_nothing_raised { post.save! }
+    assert_equal [comment], post.reload.comments
+  end
+
 end

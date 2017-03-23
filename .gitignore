@@ -2,3 +2,6 @@ pkg
 *.gem
 .ruby-gemset
 .ruby-version
+
+# Ignore bundler config.
+/.bundle
