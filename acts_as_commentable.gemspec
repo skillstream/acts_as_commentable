@@ -21,6 +21,9 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
+    # RubyGems 4 removed Gem::RubyGemsVersion; keep old gemspecs working
+    Gem::RubyGemsVersion = Gem.rubygems_version.to_s unless defined?(Gem::RubyGemsVersion)
+
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
     else
     end
